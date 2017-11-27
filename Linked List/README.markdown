@@ -292,10 +292,8 @@ Let's write a method that lets you insert a new node at any index in the list.
 }
 ```
 
-As with the node (atIndex :) method, the insert (_: at:) method also branches depending on whether the given index is 0 or not.
-First, if the given index is 0, replace the value of head with the new node.
-
-Let's look at an example. Suppose we have the following list and the new node labbled C.
+As with node(atIndex :) method, insert(_: at:) method also branches depending on whether the given index is 0 or not.
+First let's look at the former case. Suppose we have the following list and the new node labbled C.
 
              +---------+     +---------+
     head --->|         |---->|         |-----//----->
@@ -311,7 +309,7 @@ Let's look at an example. Suppose we have the following list and the new node la
              |         |
              +---------+
     
-First put the new node before the first node. In this way: 
+Now put the new node before the first node. In this way: 
 
     new.next = head
     head.previous = new
@@ -336,7 +334,7 @@ Finally, replace the head with the new node.
 
 
 However, when the given index is greater than 0, it is necessary to get the node previous and next index and insert between them.
-The previous and next node can be obtained using node(atIndex:) as follows:
+You can also obtain the previous and next node using node(atIndex:) as follows:
 
              +---------+         +---------+     +---------+    
     head --->|         |---//--->|         |---->|         |----
