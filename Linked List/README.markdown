@@ -299,43 +299,43 @@ As below:
 
 Before inserting new node at 0.
 
-         +---------+     +---------+
-head --->|         |---->|         |-----//----->
-         |    A    |     |    B    |
- nil <---|         |<----|         |<----//------
-         +---------+     +---------+ 
-             [0]             [1]
-              
-              
-         +---------+
-         |         |--->nil
-new ---->|    C    |
-         |         |
-         +---------+
-
+             +---------+     +---------+
+    head --->|         |---->|         |-----//----->
+             |    A    |     |    B    |
+     nil <---|         |<----|         |<----//------
+             +---------+     +---------+ 
+                 [0]             [1]
+                  
+                  
+             +---------+
+             |         |--->nil
+    new ---->|    C    |
+             |         |
+             +---------+
+    
 
 Now Connects new node(C) to the node(A) pointed by the head.
 
-new.next = head
-head.previous = new
-
-         +---------+               +---------+     +---------+
-         |         |----> head --->|         |---->|         |-----//----->
- new --->|    C    |               |    A    |     |    B    |
-         |         |<--------------|         |<----|         |<----//------
-         +---------+               +---------+     +---------+ 
+    new.next = head
+    head.previous = new
+    
+             +---------+               +---------+     +---------+
+             |         |----> head --->|         |---->|         |-----//----->
+     new --->|    C    |               |    A    |     |    B    |
+             |         |<--------------|         |<----|         |<----//------
+             +---------+               +---------+     +---------+ 
 
 
 Finally, Changes the head pointer to point to new node(C).
 
-head = new
-
-         +---------+    +---------+     +---------+
-head --->|         |--->|         |---->|         |-----//----->
-         |    C    |    |    A    |     |    B    |
- nil <---|         |<---|         |<----|         |<----//------
-         +---------+    +---------+     +---------+ 
-             [0]            [1]
+    head = new
+    
+             +---------+    +---------+     +---------+
+    head --->|         |--->|         |---->|         |-----//----->
+             |    C    |    |    A    |     |    B    |
+     nil <---|         |<---|         |<----|         |<----//------
+             +---------+    +---------+     +---------+ 
+                 [0]            [1]
 
 
 However, when the given index is greater than 0, it is necessary to get the node previous and next index and insert between them.
@@ -343,41 +343,40 @@ The previous and next node can be obtained as follows:
 
 Before inserting new node.
 
-         +---------+         +---------+     +---------+    
-head --->|         |---//--->|         |---->|         |----
-         |    0    |         |    A    |     |    B    |    
- nil <---|         |---//<---|         |<----|         |<---
-         +---------+         +---------+     +---------+    
-                              [index-1]        [index]      
-                                  ^               ^ 
-                                  |               | 
-                                 prev            next
-
-prev = node(at: index-1)
-next = prev.next
+             +---------+         +---------+     +---------+    
+    head --->|         |---//--->|         |---->|         |----
+             |    0    |         |    A    |     |    B    |    
+     nil <---|         |---//<---|         |<----|         |<---
+             +---------+         +---------+     +---------+    
+                                  [index-1]        [index]      
+                                      ^               ^ 
+                                      |               | 
+                                     prev            next
+    
+    prev = node(at: index-1)
+    next = prev.next
 
 
 Secoundary, connects new node to the prev and the next.
 
-new.prev = prev
-new.next = next
-
-prev.next = new
-next.prev = new
-
+    new.prev = prev
+    new.next = next
+    
+    prev.next = new
+    next.prev = new
+    
 
 Finally, We are getting the fllowing list:
 
-
-         +---------+         +---------+     +---------+     +---------+
-head --->|         |---//--->|         |---->|         |---->|         |
-         |    0    |         |    A    |     |    C    |     |    B    |
- nil <---|         |---//<---|         |<----|         |<----|         |
-         +---------+         +---------+     +---------+     +---------+
-                              [index-1]        [index]        [index+1]
-                                  ^               ^               ^
-                                  |               |               |
-                                 prev            new             next
+             +---------+         +---------+     +---------+     +---------+
+    head --->|         |---//--->|         |---->|         |---->|         |
+             |    0    |         |    A    |     |    C    |     |    B    |
+     nil <---|         |---//<---|         |<----|         |<----|         |
+             +---------+         +---------+     +---------+     +---------+
+                                  [index-1]        [index]        [index+1]
+                                      ^               ^               ^
+                                      |               |               |
+                                     prev            new             next
 
 
 Try it out:
