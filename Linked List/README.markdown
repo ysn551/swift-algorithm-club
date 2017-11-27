@@ -225,7 +225,7 @@ What if we wanted to find the node at a specific index in the list? With an arra
       var node = head!.next
       for _ in 1..<index {
         node = node?.next
-        if node == nil {     // *1
+        if node == nil { //(*1)
           break
         }
       }
@@ -234,13 +234,11 @@ What if we wanted to find the node at a specific index in the list? With an arra
   }
 ```
 
-
-Like the count method, it is necessary to have the judgement whether the given index is 0 or not.
-When the given index is 0, it returns the head pointer as it is.
-However, when the given index is greater than 0, it follows the list by traversing the `node.next` pointer from` head`.
+First we check whether the given index is 0 or not. Because if it is 0, it returns the head as it is.
+However, when the given index is greater than 0, it starts at head then keeps following the node.next pointers to step through the list.
 The difference from count method at this time is that there are two termination conditions.
 One is when the for-loop statement reaches index, and we were able to acquire the node of the given index.
-The second is when `node.next` in for-loop statement returns nil and cause break (\*1)
+The second is when `node.next` in for-loop statement returns nil and cause break. (*1)
 This means that the given index is out of bounds and it causes a crash.
 
 Try it out:
@@ -272,20 +270,21 @@ It crashes on `list[2]` because there is no node at that index.
 
 So far we've written code to add new nodes to the end of the list, but that's slow because you need to find the end of the list first. (It would be fast if we used a tail pointer.) For this reason, if the order of the items in the list doesn't matter, you should insert at the front of the list instead. That's always an **O(1)** operation.
 
+
 Let's write a method that lets you insert a new node at any index in the list.
 
 ```swift
   public func insert(_ node: Node, atIndex index: Int) {
    let newNode = node
-   if index == 0 {                            // *1
+   if index == 0 {
      newNode.next = head                      
      head?.previous = newNode
      head = newNode
    } else {
-     let prev = self.node(atIndex: index-1)   // *2
+     let prev = self.node(atIndex: index-1)
      let next = prev.next
 
-     newNode.previous = prev                  // *3
+     newNode.previous = prev
      newNode.next = prev.next
      prev.next = newNode
      next?.previous = newNode
@@ -294,10 +293,9 @@ Let's write a method that lets you insert a new node at any index in the list.
 ```
 
 As with the node (atIndex :) method, the insert (_: at:) method also branches depending on whether the given index is 0 or not.
-When the given index is 0, the head pointer is replaced with the new node.
-As below:
+First, if the given index is 0, replace the value of head with the new node.
 
-Before inserting new node at 0.
+Let's look at an example. Suppose we have the following list and the new node labbled C.
 
              +---------+     +---------+
     head --->|         |---->|         |-----//----->
@@ -307,26 +305,25 @@ Before inserting new node at 0.
                  [0]             [1]
                   
                   
-             +---------+
-             |         |--->nil
-    new ---->|    C    |
+             +---------+ 
+     new --->|         |----> nil
+             |    C    |
              |         |
              +---------+
     
-
-Now Connects new node(C) to the node(A) pointed by the head.
+First put the new node before the first node. In this way: 
 
     new.next = head
     head.previous = new
     
-             +---------+               +---------+     +---------+
-             |         |----> head --->|         |---->|         |-----//----->
-     new --->|    C    |               |    A    |     |    B    |
-             |         |<--------------|         |<----|         |<----//------
-             +---------+               +---------+     +---------+ 
+             +---------+            +---------+     +---------+
+     new --->|         |--> head -->|         |---->|         |-----//----->
+             |    C    |            |    A    |     |    B    |
+             |         |<-----------|         |<----|         |<----//------
+             +---------+            +---------+     +---------+ 
 
 
-Finally, Changes the head pointer to point to new node(C).
+Finally, replace the head with the new node.
 
     head = new
     
@@ -339,9 +336,7 @@ Finally, Changes the head pointer to point to new node(C).
 
 
 However, when the given index is greater than 0, it is necessary to get the node previous and next index and insert between them.
-The previous and next node can be obtained as follows:
-
-Before inserting new node.
+The previous and next node can be obtained using node(atIndex:) as follows:
 
              +---------+         +---------+     +---------+    
     head --->|         |---//--->|         |---->|         |----
@@ -356,17 +351,10 @@ Before inserting new node.
     prev = node(at: index-1)
     next = prev.next
 
+Now insert new node between the prev and the next.
 
-Secoundary, connects new node to the prev and the next.
-
-    new.prev = prev
-    new.next = next
-    
-    prev.next = new
-    next.prev = new
-    
-
-Finally, We are getting the fllowing list:
+    new.prev = prev; prev.next = new  // connect prev and new.
+    new.next = next; next.prev = new  // connect new and next.
 
              +---------+         +---------+     +---------+     +---------+
     head --->|         |---//--->|         |---->|         |---->|         |
@@ -389,8 +377,7 @@ list[2]     // "World"
 ```
 
 Also try adding new nodes to the front and back of the list, to verify that this works properly.
-
-> **Note:** The `nodesBeforeAndAfter()` and `insert(atIndex)` functions can also be used with a singly linked list because we don't depend on the node's `previous` pointer to find the previous element.
+> **Note:** The `node(atIndex:)` and `insert(_: atIndex:)` functions can also be used with a singly linked list because we don't depend on the node's `previous` pointer to find the previous element.
 
 What else do we need? Removing nodes, of course! First we'll do `removeAll()`, which is really simple:
 
