@@ -218,7 +218,7 @@ It loops through the list in the same manner but this time increments a counter 
 What if we wanted to find the node at a specific index in the list? With an array we can just write `array[index]` and it's an **O(1)** operation. It's a bit more involved with linked lists, but again the code follows a similar pattern:
 
 ```swift
-  public func node(atIndex index: Int) -> Node {
+  public func node(at index: Int) -> Node {
     if index == 0 {
       return head!
     } else {
@@ -244,16 +244,16 @@ This means that the given index is out of bounds and it causes a crash.
 Try it out:
 
 ```swift
-list.nodeAt(0)!.value    // "Hello"
-list.nodeAt(1)!.value    // "World"
-// list.nodeAt(2)           // crash
+list.node(at: 0)!.value    // "Hello"
+list.node(at: 1)!.value    // "World"
+// list.node(at: 2)           // crash
 ```
 
 For fun we can implement a `subscript` method too:
 
 ```swift
   public subscript(index: Int) -> T {
-    let node = node(atIndex: index)
+    let node = node(at: index)
     return node.value
   }
 ```
@@ -274,14 +274,14 @@ So far we've written code to add new nodes to the end of the list, but that's sl
 Let's write a method that lets you insert a new node at any index in the list.
 
 ```swift
-  public func insert(_ node: Node, atIndex index: Int) {
+  public func insert(_ node: Node, at index: Int) {
    let newNode = node
    if index == 0 {
      newNode.next = head                      
      head?.previous = newNode
      head = newNode
    } else {
-     let prev = self.node(atIndex: index-1)
+     let prev = self.node(at: index-1)
      let next = prev.next
 
      newNode.previous = prev
@@ -292,7 +292,7 @@ Let's write a method that lets you insert a new node at any index in the list.
 }
 ```
 
-As with node(atIndex :) method, insert(_: at:) method also branches depending on whether the given index is 0 or not.
+As with `node(at:)` method, `insert(_: at:)` method also branches depending on whether the given index is 0 or not.
 First let's look at the former case. Suppose we have the following list and the new node(C).
 
              +---------+     +---------+
@@ -334,7 +334,7 @@ Finally, replace the head with the new node.
 
 
 However, when the given index is greater than 0, it is necessary to get the node previous and next index and insert between them.
-You can also obtain the previous and next node using node(atIndex:) as follows:
+You can also obtain the previous and next node using `node(at:)` as follows:
 
              +---------+         +---------+     +---------+    
     head --->|         |---//--->|         |---->|         |----
@@ -368,14 +368,14 @@ Now insert new node between the prev and the next.
 Try it out:
 
 ```swift
-list.insert("Swift", atIndex: 1)
+list.insert("Swift", at: 1)
 list[0]     // "Hello"
 list[1]     // "Swift"
 list[2]     // "World"
 ```
 
 Also try adding new nodes to the front and back of the list, to verify that this works properly.
-> **Note:** The `node(atIndex:)` and `insert(_: atIndex:)` functions can also be used with a singly linked list because we don't depend on the node's `previous` pointer to find the previous element.
+> **Note:** The `node(at:)` and `insert(_: at:)` functions can also be used with a singly linked list because we don't depend on the node's `previous` pointer to find the previous element.
 
 What else do we need? Removing nodes, of course! First we'll do `removeAll()`, which is really simple:
 
@@ -420,7 +420,7 @@ list[0]                        // "Swift"
 list[1]                        // "World"
 ```
 
-If you don't have a reference to the node, you can use `removeLast()` or `removeAt()`:
+If you don't have a reference to the node, you can use `removeLast()` or `remove(at:)`:
 
 ```swift
   public func removeLast() -> T {
@@ -428,8 +428,8 @@ If you don't have a reference to the node, you can use `removeLast()` or `remove
     return remove(node: last!)
   }
 
-  public func removeAt(_ index: Int) -> T {
-    let node = nodeAt(index)
+  public func remove(at index: Int) -> T {
+    let node = node(at: index)
     assert(node != nil)
     return remove(node: node!)
   }
@@ -442,7 +442,7 @@ list.removeLast()              // "World"
 list.count                     // 1
 list[0]                        // "Swift"
 
-list.removeAt(0)          // "Swift"
+list.remove(at: 0)          // "Swift"
 list.count                     // 0
 ```
 
